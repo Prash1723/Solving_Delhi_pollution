@@ -34,7 +34,7 @@ cd Solving_Delhi_pollution
 pip3 install -r requirements.txt
 ```
 
-4. Run the python file
+4. Run the python file (Dashboard)
 
 ```bash
 bokeh serve --show script.py
