@@ -17,23 +17,31 @@ To run this project, follow the steps:
 
 1. Clone the repository:
 
-"""git clone https://github.com/Prash1723/Solving_Delhi_pollution.git""""
+```bash
+git clone https://github.com/Prash1723/Solving_Delhi_pollution.git
+```
 
 2. Navigate to the project folder:
 
-"""cd Solving_Delhi_pollution"""
+```bash
+cd Solving_Delhi_pollution
+```
 
 3. Install the required modules
 
-"""pip3 install -r requirements.txt"""
+```bash
+pip3 install -r requirements.txt
+```
 
 4. Run the python file
 
-"""bokeh serve --show script.py""""
+```bash
+bokeh serve --show script.py
+```
 
 ## License
 
-This project is licensed under the MIT License. See the ""LICENSE"" file for more information.
+This project is licensed under the MIT License. See the `LICENSE` file for more information.
 
 ## Acknowledgments
 
