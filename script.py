@@ -1,5 +1,4 @@
 import pandas as pd
-from datetime import datetime
 
 from bokeh.io import curdoc
 from bokeh.layouts import column, row
@@ -7,18 +6,10 @@ from bokeh.models import ColumnDataSource, Select, RangeSlider
 from bokeh.models import Tabs, TabPanel
 from bokeh.plotting import figure
 
-df = pd.read_csv(r'~/Desktop/scripting/python/projects/AQI Delhi/data/Delhi_AQIBulletins.csv')
-
-# Preprocess date feature
-df['date'] = pd.to_datetime(df['date'], format="%Y-%m-%d")
-
-# Year
-df['year'] = df['date'].apply(lambda x: int(str(x).split('-')[0]))
-
-print(df['year'])
+df = pd.read_csv(r'~/Projects/Solving_Delhi_pollution/data/preprocessed.csv')
 
 # Source
-source = ColumnDataSource(df)
+source1 = ColumnDataSource(df)
 
 # Create widgets
 date_range = RangeSlider(
@@ -43,13 +34,12 @@ p = figure(
 	width=700
 	)
 
-p.line("date", "Index Value", source=source, line_width=2)
-p.scatter("date", "Index Value", source=source, size=3, color="red")
+p.line("date", "Index Value", source=source1, line_width=2)
+p.scatter("date", "Index Value", source=source1, size=3, color="red")
 p.xaxis.axis_label = "Date"
 p.yaxis.axis_label = "AQI Value"
 
 # App
-
 def update_chart():
 	slider_value = date_range.value
 	slider_low_range = slider_value[0]

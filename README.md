@@ -11,6 +11,9 @@ The dataset used is the air pollution records for 2015-2023 and it features the 
 - Python 3.12.3
 - IDE
 - Internet (For Dashboard)
+- Modules:
+    - Pandas
+    - Bokeh
 
 ## Run
 
