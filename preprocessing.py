@@ -12,4 +12,4 @@ df['date'] = pd.to_datetime(df['date'], format="%Y-%m-%d")
 # Year
 df['year'] = df['date'].apply(lambda x: int(str(x).split('-')[0]))
 
-df.to_csv(r'data/preprocessed.csv')
+df.to_csv(r'data/preprocessed.csv', index=False)

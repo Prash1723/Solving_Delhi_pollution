@@ -51,7 +51,7 @@ def update_chart():
 	if selected_pollutant != "All":
 		filtered_data = filtered_data[filtered_data["Prominent Pollutant"]==selected_pollutant]
 
-	source.data = ColumnDataSource.from_df(filtered_data)
+	source1.data = ColumnDataSource.from_df(filtered_data)
 
 date_range.on_change("value", lambda attr, old, new: update_chart())
 pollutant_select.on_change("value", lambda attr, old, new: update_chart())
