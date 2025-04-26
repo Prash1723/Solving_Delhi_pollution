@@ -1,4 +1,4 @@
-# Solving_Delhi_pollution
+# Solving Delhi pollution
 
 The aim of the project is to largely identify the pollution levels in the second most populated city in the world and ideally come up with a solution. Initially, for visualization we have a Dashboard to view all the statistics in the problem.
 
