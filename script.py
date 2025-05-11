@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 from bokeh.io import curdoc
 from bokeh.layouts import column, row
@@ -6,7 +7,11 @@ from bokeh.models import ColumnDataSource, Select, RangeSlider
 from bokeh.models import Tabs, TabPanel
 from bokeh.plotting import figure
 
-df = pd.read_csv(r'~/Projects/Solving_Delhi_pollution/data/preprocessed.csv')
+df = pd.read_csv(r'~/Projects/Solving_Delhi_pollution/data/Delhi_AQIBulletins.csv')
+
+df['year'] = pd.to_datetime(df['date']).dt.year
+
+print(df['Prominent Pollutant'][23])
 
 # Source
 source1 = ColumnDataSource(df)
@@ -14,15 +19,15 @@ source1 = ColumnDataSource(df)
 # Create widgets
 date_range = RangeSlider(
 	title="Select range of year",
-	value=(2015, 2023),
-	start=2015,
-	end=2023,
+	value=(df.year.min(), df.year.max()),
+	start=df.year.min(),
+	end=df.year.max(),
 	step=1
 	)
 
 pollutant_select = Select(
 	title="Select Pollutant",
-	value="All",
+    value="All",
 	options=["All"] + list(set(df['Prominent Pollutant']))
 	)
 
@@ -42,14 +47,15 @@ p.yaxis.axis_label = "AQI Value"
 # App
 def update_chart():
 	slider_value = date_range.value
-	slider_low_range = slider_value[0]
-	slider_high_range = slider_value[1]
+	slider_lr = slider_value[0]
+	slider_hr = slider_value[1]
 	selected_pollutant = pollutant_select.value
 
-	filtered_data = df.query("year>=@slider_low_range and year<=@slider_high_range")
-
 	if selected_pollutant != "All":
-		filtered_data = filtered_data[filtered_data["Prominent Pollutant"]==selected_pollutant]
+		filtered_data = df.query("`Prominent Pollutant` == @selected_pollutant and year >= @slider_lr and year <= @slider_hr")
+
+	else:
+		filtered_data = df.query("year>=@slider_lr and year<=@slider_hr")
 
 	source1.data = ColumnDataSource.from_df(filtered_data)
 
