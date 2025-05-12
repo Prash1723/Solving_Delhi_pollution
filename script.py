@@ -9,7 +9,8 @@ from bokeh.plotting import figure
 
 df = pd.read_csv(r'~/Projects/Solving_Delhi_pollution/data/Delhi_AQIBulletins.csv')
 
-df['year'] = pd.to_datetime(df['date']).dt.year
+df['date'] = pd.to_datetime(df['date'])
+df['year'] = df['date'].dt.year
 
 print(df['Prominent Pollutant'][23])
 
@@ -28,7 +29,7 @@ date_range = RangeSlider(
 pollutant_select = Select(
 	title="Select Pollutant",
     value="All",
-	options=["All"] + list(set(df['Prominent Pollutant']))
+	options=["All"] + list(set(df['Prominent Pollutant'].dropna().astype(str)))
 	)
 
 # Figure
