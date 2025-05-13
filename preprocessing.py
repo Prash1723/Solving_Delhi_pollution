@@ -1,9 +1,7 @@
 # Libraries
-
 import pandas as pd
 
-# Preprocess
-
+# Load data
 df = pd.read_csv(r'data/Delhi_AQIBulletins.csv')
 
 # Preprocess date feature
@@ -11,6 +9,9 @@ df['date'] = pd.to_datetime(df['date'], format="%Y-%m-%d")
 
 # Year
 df['year'] = df['date'].apply(lambda x: int(str(x).split('-')[0]))
+
+# Air Quality
+df['Air Quality'] = df['Air Quality'].apply(lambda s: 'Very Poor' if 'Very poor' in s else s)
 
 # Create list of unique pollutants
 values = []
@@ -21,13 +22,9 @@ for i in combo_pollutants:
 
 pollutants = list(set(values))																# Unique pollutants
 
-print(pollutants)
-
 # Create sparse data for individual pollutants
 for i in pollutants:
 	df[i] = df['Prominent Pollutant'].apply(lambda s: 1 if i in s else 0)
-
-print(df)
 
 # Save it to CSV file
 df.to_csv('data/preprocessed.csv', index=False)
