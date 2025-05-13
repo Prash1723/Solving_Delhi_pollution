@@ -21,4 +21,13 @@ for i in combo_pollutants:
 
 pollutants = list(set(values))																# Unique pollutants
 
+print(pollutants)
+
+# Create sparse data for individual pollutants
+for i in pollutants:
+	df[i] = df['Prominent Pollutant'].apply(lambda s: 1 if i in s else 0)
+
+print(df)
+
+# Save it to CSV file
 df.to_csv('data/preprocessed.csv', index=False)
