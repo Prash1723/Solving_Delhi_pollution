@@ -54,7 +54,7 @@ source2 = ColumnDataSource(df2)
 p2 = figure(
 	x_range=(0,3000),
 	y_range=pollutants,
-	title="Pollutants presence",
+	title="No. of days pollutants present",
 	height=400,
 	width=400
 	)
@@ -75,6 +75,9 @@ p2.text(
 	anchor='bottom_left',
 	source=source2
 	)
+
+p2.xaxis.axis_label = "Days"
+p2.yaxis.axis_label = "Pollutants"
 
 # App
 def update_chart():
