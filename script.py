@@ -43,6 +43,7 @@ p.scatter("date", "Index Value", source=source1, size=3, color="red")
 p.xaxis.axis_label = "Date"
 p.yaxis.axis_label = "AQI Value"
 
+# Pollutants present
 pollutants = ['SO2', 'O3', 'PM10', 'NO2', 'OZONE', 'CO', 'PM2.5']
 
 df2 = df[["SO2", "O3", "PM10", "NO2", "OZONE", "CO", "PM2.5"]].sum().reset_index()
@@ -79,8 +80,46 @@ p2.text(
 p2.xaxis.axis_label = "Days"
 p2.yaxis.axis_label = "Pollutants"
 
+# Air quality
+
+aq = df['Air Quality'].unique().tolist()
+
+df3 = df.groupby('Air Quality')['date'].count().reset_index()
+
+df3.columns = ['Air Quality', 'days']
+
+source3 = ColumnDataSource(df3)
+
+p3 = figure(
+	x_range=(0,1500),
+	y_range=aq,
+	title="Quality of Air in days",
+	height=400,
+	width=400
+	)
+
+p3.hbar( 
+	y='Air Quality', 
+	right='days', 
+	height=0.9, 
+	source=source3
+	)
+
+p3.text(
+	x='days',
+	y='Air Quality',
+	text='days',
+	x_offset=5,
+	y_offset=5,
+	anchor='bottom_left',
+	source=source3
+	)
+
+p3.xaxis.axis_label = "Days"
+p3.yaxis.axis_label = "Air Quality"
+
 # App
-def update_chart():
+def update_chart1():
 	slider_value = date_range.value
 	slider_lr = slider_value[0]
 	slider_hr = slider_value[1]
@@ -94,18 +133,34 @@ def update_chart():
 		filtered_data1 = df.query("year >= @slider_lr and year <= @slider_hr")
 
 	# Pollutant presence
-	filtered_data2 = df.query("year >= @slider_lr and year <= @slider_hr")[["SO2", "O3", "PM10", "NO2", "OZONE", "CO", "PM2.5"]].sum().reset_index()
+	filtered_data2 = df.query("year >= @slider_lr and year <= @slider_hr")[[
+	"SO2",
+	"O3",
+	"PM10",
+	"NO2", 
+	"OZONE", 
+	"CO", 
+	"PM2.5"
+	]].sum().reset_index()
 
 	filtered_data2.columns = ['pollutants', 'count']
 
+	# Air Quality
+	filtered_data3 = df.query("year >= @slider_lr and year <= @slider_hr").groupby('Air Quality')[
+	'date'
+	].count().reset_index()
+
+	filtered_data3.columns = ['Air Quality', 'days']
+
 	source1.data = ColumnDataSource.from_df(filtered_data1)
 	source2.data = ColumnDataSource.from_df(filtered_data2)
+	source3.data = ColumnDataSource.from_df(filtered_data3)
 
-date_range.on_change("value", lambda attr, old, new: update_chart())
-pollutant_select.on_change("value", lambda attr, old, new: update_chart())
+date_range.on_change("value", lambda attr, old, new: update_chart1())
+pollutant_select.on_change("value", lambda attr, old, new: update_chart1())
 
 # Layout
-layout = row(column(row(date_range, pollutant_select), p), p2)
+layout = row(column(row(date_range, pollutant_select), p), p2, p3)
 
 curdoc().add_root(layout)
 curdoc().title = "AQI Dashboard"
