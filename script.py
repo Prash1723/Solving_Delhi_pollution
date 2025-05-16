@@ -48,7 +48,7 @@ pollutants = ['SO2', 'O3', 'PM10', 'NO2', 'OZONE', 'CO', 'PM2.5']
 
 df2 = df[["SO2", "O3", "PM10", "NO2", "OZONE", "CO", "PM2.5"]].sum().reset_index()
 
-df2.columns = ['pollutants', 'count']
+df2.columns = ['pollutants', 'days']
 
 source2 = ColumnDataSource(df2)
 
@@ -62,15 +62,15 @@ p2 = figure(
 
 p2.hbar( 
 	y='pollutants', 
-	right='count', 
+	right='days', 
 	height=0.9, 
 	source=source2
 	)
 
 p2.text(
-	x='count',
+	x='days',
 	y='pollutants',
-	text='count',
+	text='days',
 	x_offset=5,
 	y_offset=5,
 	anchor='bottom_left',
