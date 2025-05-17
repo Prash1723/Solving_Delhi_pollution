@@ -56,14 +56,14 @@ p2 = figure(
 	x_range=(0,3000),
 	y_range=pollutants,
 	title="No. of days pollutants present",
-	height=400,
+	height=200,
 	width=400
 	)
 
 p2.hbar( 
 	y='pollutants', 
 	right='days', 
-	height=0.9, 
+	height=0.5, 
 	source=source2
 	)
 
@@ -94,14 +94,14 @@ p3 = figure(
 	x_range=(0,1500),
 	y_range=aq,
 	title="Quality of Air in days",
-	height=400,
+	height=200,
 	width=400
 	)
 
 p3.hbar( 
 	y='Air Quality', 
 	right='days', 
-	height=0.9, 
+	height=0.5, 
 	source=source3
 	)
 
@@ -127,30 +127,58 @@ def update_chart1():
 
 	# Trend line
 	if selected_pollutant != "All":
-		filtered_data1 = df.query("`Prominent Pollutant` == @selected_pollutant and year >= @slider_lr and year <= @slider_hr")
+		# Trend line
+		filtered_data1 = df.query(
+			"`Prominent Pollutant` == @selected_pollutant and year >= @slider_lr and year <= @slider_hr"
+			)
+
+		# Pollutant presence
+		filtered_data2 = df.query(
+			"`Prominent Pollutant` == @selected_pollutant and year >= @slider_lr and year <= @slider_hr"
+			)[[
+		"SO2",
+		"O3",
+		"PM10",
+		"NO2", 
+		"OZONE", 
+		"CO", 
+		"PM2.5"
+		]].sum().reset_index()
+
+		filtered_data2.columns = ['pollutants', 'days']
+
+		# Air Quality
+		filtered_data3 = df.query(
+			"`Prominent Pollutant` == @selected_pollutant and year >= @slider_lr and year <= @slider_hr"
+			).groupby('Air Quality')[
+		'date'
+		].count().reset_index()
+
+		filtered_data3.columns = ['Air Quality', 'days']
 
 	else:
+		# Trend line
 		filtered_data1 = df.query("year >= @slider_lr and year <= @slider_hr")
 
-	# Pollutant presence
-	filtered_data2 = df.query("year >= @slider_lr and year <= @slider_hr")[[
-	"SO2",
-	"O3",
-	"PM10",
-	"NO2", 
-	"OZONE", 
-	"CO", 
-	"PM2.5"
-	]].sum().reset_index()
+		# Pollutant presence
+		filtered_data2 = df.query("year >= @slider_lr and year <= @slider_hr")[[
+		"SO2",
+		"O3",
+		"PM10",
+		"NO2", 
+		"OZONE", 
+		"CO", 
+		"PM2.5"
+		]].sum().reset_index()
 
-	filtered_data2.columns = ['pollutants', 'count']
+		filtered_data2.columns = ['pollutants', 'days']
 
-	# Air Quality
-	filtered_data3 = df.query("year >= @slider_lr and year <= @slider_hr").groupby('Air Quality')[
-	'date'
-	].count().reset_index()
+		# Air Quality
+		filtered_data3 = df.query("year >= @slider_lr and year <= @slider_hr").groupby('Air Quality')[
+		'date'
+		].count().reset_index()
 
-	filtered_data3.columns = ['Air Quality', 'days']
+		filtered_data3.columns = ['Air Quality', 'days']
 
 	source1.data = ColumnDataSource.from_df(filtered_data1)
 	source2.data = ColumnDataSource.from_df(filtered_data2)
@@ -160,7 +188,7 @@ date_range.on_change("value", lambda attr, old, new: update_chart1())
 pollutant_select.on_change("value", lambda attr, old, new: update_chart1())
 
 # Layout
-layout = row(column(row(date_range, pollutant_select), p), p2, p3)
+layout = row(column(row(date_range, pollutant_select), p), column(p2, p3))
 
 curdoc().add_root(layout)
 curdoc().title = "AQI Dashboard"
