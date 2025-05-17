@@ -56,7 +56,7 @@ p2 = figure(
 	x_range=(0,3000),
 	y_range=pollutants,
 	title="No. of days pollutants present",
-	height=200,
+	height=250,
 	width=400
 	)
 
@@ -94,7 +94,7 @@ p3 = figure(
 	x_range=(0,1500),
 	y_range=aq,
 	title="Quality of Air in days",
-	height=200,
+	height=250,
 	width=400
 	)
 
@@ -157,10 +157,10 @@ def update_chart1():
 		filtered_data3.columns = ['Air Quality', 'days']
 
 	else:
-		# Trend line
+		# Trend line(--All--)
 		filtered_data1 = df.query("year >= @slider_lr and year <= @slider_hr")
 
-		# Pollutant presence
+		# Pollutant presence(--All--)
 		filtered_data2 = df.query("year >= @slider_lr and year <= @slider_hr")[[
 		"SO2",
 		"O3",
@@ -173,7 +173,7 @@ def update_chart1():
 
 		filtered_data2.columns = ['pollutants', 'days']
 
-		# Air Quality
+		# Air Quality(--All--)
 		filtered_data3 = df.query("year >= @slider_lr and year <= @slider_hr").groupby('Air Quality')[
 		'date'
 		].count().reset_index()
