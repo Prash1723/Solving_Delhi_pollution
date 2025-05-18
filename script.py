@@ -133,7 +133,7 @@ def update_chart1():
 	selected_season = season_select.value
 
 	# Trend line
-	if selected_pollutant != "All" & selected_season != "All":
+	if selected_pollutant != "All" and selected_season != "All":
 		# Trend line
 		filtered_data1 = df.query(
 			"`Prominent Pollutant` == @selected_pollutant and season == @selected_season and year >= @slider_lr and year <= @slider_hr"
@@ -193,9 +193,10 @@ def update_chart1():
 
 date_range.on_change("value", lambda attr, old, new: update_chart1())
 pollutant_select.on_change("value", lambda attr, old, new: update_chart1())
+season_select.on_change("value", lambda attr, old, new: update_chart1())
 
 # Layout
-layout = row(column(row(date_range, pollutant_select), p), column(p2, p3))
+layout = row(column(row(date_range, pollutant_select, season_select), p), column(p2, p3))
 
 curdoc().add_root(layout)
 curdoc().title = "AQI Dashboard"
