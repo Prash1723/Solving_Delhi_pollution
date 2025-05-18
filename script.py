@@ -30,6 +30,12 @@ pollutant_select = Select(
 	options=["All"] + list(set(df['Prominent Pollutant'].dropna().astype(str)))
 	)
 
+season_select = Select(
+	title="Select Season",
+	value="All",
+	options=["All"] + list(set(df['season'].dropna().astype(str)))
+	)
+
 # Figure
 p = figure(
 	x_axis_type="datetime",
@@ -124,12 +130,13 @@ def update_chart1():
 	slider_lr = slider_value[0]
 	slider_hr = slider_value[1]
 	selected_pollutant = pollutant_select.value
+	selected_season = season_select.value
 
 	# Trend line
-	if selected_pollutant != "All":
+	if selected_pollutant != "All" & selected_season != "All":
 		# Trend line
 		filtered_data1 = df.query(
-			"`Prominent Pollutant` == @selected_pollutant and year >= @slider_lr and year <= @slider_hr"
+			"`Prominent Pollutant` == @selected_pollutant and season == @selected_season and year >= @slider_lr and year <= @slider_hr"
 			)
 
 		# Pollutant presence
