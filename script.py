@@ -136,12 +136,12 @@ def update_chart1():
 	if selected_pollutant != "All" and selected_season != "All":
 		# Trend line
 		filtered_data1 = df.query(
-			"`Prominent Pollutant` == @selected_pollutant and season == @selected_season and year >= @slider_lr and year <= @slider_hr"
+			"`Prominent Pollutant` == @selected_pollutant and season == @selected_season"
 			)
 
 		# Pollutant presence
 		filtered_data2 = df.query(
-			"`Prominent Pollutant` == @selected_pollutant and year >= @slider_lr and year <= @slider_hr"
+			"`Prominent Pollutant` == @selected_pollutant and season == @selected_season"
 			)[[
 		"SO2",
 		"O3",
@@ -156,8 +156,56 @@ def update_chart1():
 
 		# Air Quality
 		filtered_data3 = df.query(
-			"`Prominent Pollutant` == @selected_pollutant and year >= @slider_lr and year <= @slider_hr"
+			"`Prominent Pollutant` == @selected_pollutant and season == @season_select"
 			).groupby('Air Quality')[
+		'date'
+		].count().reset_index()
+
+		filtered_data3.columns = ['Air Quality', 'days']
+
+	elif selected_pollutant == "All" and selected_season != "All":
+		# Trend line
+		filtered_data1 = df.query("season == @selected_season")
+
+		# Pollutant presence
+		filtered_data2 = df.query("season == @selected_season")[[
+		"SO2",
+		"O3",
+		"PM10",
+		"NO2", 
+		"OZONE", 
+		"CO", 
+		"PM2.5"
+		]].sum().reset_index()
+
+		filtered_data2.columns = ['pollutants', 'days']
+
+		# Air Quality
+		filtered_data3 = df.query("season == @selected_season").groupby('Air Quality')[
+		'date'
+		].count().reset_index()
+
+		filtered_data3.columns = ['Air Quality', 'days']
+
+	elif selected_pollutant != "All" and selected_season == "All":
+		# Trend line
+		filtered_data1 = df.query("`Prominent Pollutant` == @selected_pollutant")
+
+		# Pollutant presence
+		filtered_data2 = df.query("`Prominent Pollutant` == @selected_pollutant")[[
+		"SO2",
+		"O3",
+		"PM10",
+		"NO2", 
+		"OZONE", 
+		"CO", 
+		"PM2.5"
+		]].sum().reset_index()
+
+		filtered_data2.columns = ['pollutants', 'days']
+
+		# Air Quality
+		filtered_data3 = df.query("`Prominent Pollutant` == @sellected_pollutant").groupby('Air Quality')[
 		'date'
 		].count().reset_index()
 
