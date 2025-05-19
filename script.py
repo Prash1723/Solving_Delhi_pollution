@@ -206,7 +206,7 @@ def update_chart1():
 
 		# Air Quality
 		filtered_data3 = df.query(
-			"`Prominent Pollutant` == @sellected_pollutant and year>=@slider_lr and year<=slider_hr"
+			"`Prominent Pollutant` == @selected_pollutant and year>=@slider_lr and year<=slider_hr"
 			).groupby('Air Quality')[
 		'date'
 		].count().reset_index()
