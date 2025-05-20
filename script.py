@@ -135,7 +135,7 @@ df4.columns = ['season', 'avg_aqi']
 source4 = ColumnDataSource(df4)
 
 p4 = figure(
-	x_range=(0,1500),
+	x_range=(0,500),
 	y_range=se,
 	title="Average AQI by seasons",
 	height=250,
