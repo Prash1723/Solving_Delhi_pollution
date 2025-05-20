@@ -124,6 +124,44 @@ p3.text(
 p3.xaxis.axis_label = "Days"
 p3.yaxis.axis_label = "Air Quality"
 
+# Seasons
+
+se = df['season'].unique().tolist()
+
+df4 = df.groupby('season')['Index Value'].mean().reset_index()
+
+df4.columns = ['season', 'avg_aqi']
+
+source4 = ColumnDataSource(df4)
+
+p4 = figure(
+	x_range=(0,1500),
+	y_range=se,
+	title="Average AQI by seasons",
+	height=250,
+	width=400
+	)
+
+p4.hbar( 
+	y='season', 
+	right='avg_aqi', 
+	height=0.5, 
+	source=source4
+	)
+
+p4.text(
+	x='avg_aqi',
+	y='season',
+	text='avg_aqi',
+	x_offset=5,
+	y_offset=5,
+	anchor='bottom_left',
+	source=source4
+	)
+
+p3.xaxis.axis_label = "Index Value"
+p3.yaxis.axis_label = "season"
+
 # App
 def update_chart1():
 	slider_value = date_range.value
@@ -181,7 +219,7 @@ def update_chart1():
 		filtered_data2.columns = ['pollutants', 'days']
 
 		# Air Quality
-		filtered_data3 = df.query("season == @selected_season and year>=@slider_lr and year<=slider_hr").groupby('Air Quality')[
+		filtered_data3 = df.query("season == @selected_season and year>=@slider_lr and year<=@slider_hr").groupby('Air Quality')[
 		'date'
 		].count().reset_index()
 
@@ -237,16 +275,24 @@ def update_chart1():
 
 		filtered_data3.columns = ['Air Quality', 'days']
 
+	# Seasonality
+	filtered_data4 = df.query("year>=@slider_lr and year<=@slider_hr").groupby('season')[
+	'Index Value'
+	].mean().reset_index()
+
+	filtered_data4.columns = ['season', 'avg_aqi']
+
 	source1.data = ColumnDataSource.from_df(filtered_data1)
 	source2.data = ColumnDataSource.from_df(filtered_data2)
 	source3.data = ColumnDataSource.from_df(filtered_data3)
+	source4.data = ColumnDataSource.from_df(filtered_data4)
 
 date_range.on_change("value", lambda attr, old, new: update_chart1())
 pollutant_select.on_change("value", lambda attr, old, new: update_chart1())
 season_select.on_change("value", lambda attr, old, new: update_chart1())
 
 # Layout
-layout = row(column(row(date_range, pollutant_select, season_select), p), column(p2, p3))
+layout = row(column(row(date_range, pollutant_select, season_select), p, p4), column(p2, p3))
 
 curdoc().add_root(layout)
 curdoc().title = "AQI Dashboard"
