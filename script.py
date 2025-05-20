@@ -128,7 +128,7 @@ p3.yaxis.axis_label = "Air Quality"
 
 se = df['season'].unique().tolist()
 
-df4 = df.groupby('season')['Index Value'].mean().reset_index()
+df4 = round(df.groupby('season')['Index Value'].mean(), 2).reset_index()
 
 df4.columns = ['season', 'avg_aqi']
 
@@ -276,9 +276,9 @@ def update_chart1():
 		filtered_data3.columns = ['Air Quality', 'days']
 
 	# Seasonality
-	filtered_data4 = df.query("year>=@slider_lr and year<=@slider_hr").groupby('season')[
+	filtered_data4 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('season')[
 	'Index Value'
-	].mean().reset_index()
+	].mean(), 2).reset_index()
 
 	filtered_data4.columns = ['season', 'avg_aqi']
 
