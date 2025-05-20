@@ -159,8 +159,8 @@ p4.text(
 	source=source4
 	)
 
-p3.xaxis.axis_label = "Index Value"
-p3.yaxis.axis_label = "season"
+p4.xaxis.axis_label = "Index Value"
+p4.yaxis.axis_label = "season"
 
 # App
 def update_chart1():
