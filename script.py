@@ -36,6 +36,12 @@ season_select = Select(
 	options=["All"] + list(set(df['season'].dropna().astype(str)))
 	)
 
+agg_season_select = Select(
+	title="Select Agg.",
+	value="average",
+	options=["average", "minimum", "maximum"]
+	)
+
 # Figure
 p = figure(
 	x_axis_type="datetime",
@@ -170,6 +176,10 @@ def update_chart1():
 	selected_pollutant = pollutant_select.value
 	selected_season = season_select.value
 
+	agg_dict = {'average': mean(), 'minimum': min(), 'maximum': max()}
+
+	selected_agg_season = agg_dict.get(agg_season_select.value, x)
+
 	# Trend line
 	if selected_pollutant != "All" and selected_season != "All":
 		# Trend line
@@ -278,7 +288,7 @@ def update_chart1():
 	# Seasonality
 	filtered_data4 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('season')[
 	'Index Value'
-	].mean(), 2).reset_index()
+	].selected_agg_season, 2).reset_index()
 
 	filtered_data4.columns = ['season', 'avg_aqi']
 
@@ -290,9 +300,10 @@ def update_chart1():
 date_range.on_change("value", lambda attr, old, new: update_chart1())
 pollutant_select.on_change("value", lambda attr, old, new: update_chart1())
 season_select.on_change("value", lambda attr, old, new: update_chart1())
+agg_season_select.on_change("value", lambda attr, old, new: update_chart1())
 
 # Layout
-layout = row(column(row(date_range, pollutant_select, season_select), p, p4), column(p2, p3))
+layout = row(column(row(date_range, pollutant_select, season_select), p, row(agg_season_select,  p4), column(p2, p3)))
 
 curdoc().add_root(layout)
 curdoc().title = "AQI Dashboard"
