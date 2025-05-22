@@ -175,10 +175,7 @@ def update_chart1():
 	slider_hr = slider_value[1]
 	selected_pollutant = pollutant_select.value
 	selected_season = season_select.value
-
-	agg_dict = {'average': mean(), 'minimum': min(), 'maximum': max()}
-
-	selected_agg_season = agg_dict.get(agg_season_select.value, x)
+	selected_agg_season = agg_season_select.value
 
 	# Trend line
 	if selected_pollutant != "All" and selected_season != "All":
