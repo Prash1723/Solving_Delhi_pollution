@@ -143,22 +143,22 @@ source4 = ColumnDataSource(df4)
 p4 = figure(
 	x_range=(0,500),
 	y_range=se,
-	title="Average AQI by seasons",
+	title="AQI by seasons",
 	height=250,
 	width=400
 	)
 
 p4.hbar( 
 	y='season', 
-	right='avg_aqi', 
+	right='aqi', 
 	height=0.5, 
 	source=source4
 	)
 
 p4.text(
-	x='avg_aqi',
+	x='aqi',
 	y='season',
-	text='avg_aqi',
+	text='aqi',
 	x_offset=5,
 	y_offset=5,
 	anchor='bottom_left',
@@ -286,11 +286,22 @@ def update_chart1():
 		filtered_data3.columns = ['Air Quality', 'days']
 
 	# Seasonality
-	filtered_data4 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('season')[
-	'Index Value'
-	].selected_agg_season, 2).reset_index()
+	if selected_agg_season == 'average':
+		filtered_data4 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('season')[
+		'Index Value'
+		].mean(), 2).reset_index()
 
-	filtered_data4.columns = ['season', 'avg_aqi']
+	elif selected_agg_season == 'minimum':
+		filtered_data4 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('season')[
+		'Index Value'
+		].min(), 2).reset_index()
+
+	else:
+		filtered_data4 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('season')[
+		'Index Value'
+		].max(), 2).reset_index()
+
+	filtered_data4.columns = ['season', 'aqi']
 
 	source1.data = ColumnDataSource.from_df(filtered_data1)
 	source2.data = ColumnDataSource.from_df(filtered_data2)
