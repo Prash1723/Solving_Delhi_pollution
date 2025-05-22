@@ -136,7 +136,7 @@ se = df['season'].unique().tolist()
 
 df4 = round(df.groupby('season')['Index Value'].mean(), 2).reset_index()
 
-df4.columns = ['season', 'avg_aqi']
+df4.columns = ['season', 'aqi']
 
 source4 = ColumnDataSource(df4)
 
