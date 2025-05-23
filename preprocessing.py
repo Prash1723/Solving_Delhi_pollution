@@ -1,5 +1,6 @@
 # Libraries
 import pandas as pd
+import calendar
 
 # Load data
 df = pd.read_csv(r'data/Delhi_AQIBulletins.csv')
@@ -15,21 +16,23 @@ df['Air Quality'] = df['Air Quality'].apply(lambda s: 'Very Poor' if 'Very poor'
 
 # Season
 season_dict = {
-	'1': "winter",
-	'2': "winter",
-	'3': "summer",
-	'4': "summer",
-	'5': "summer",
-	'6': "summer",
-	'7': "monsoon",
-	'8': "monsoon",
-	'9': "monsoon",
-	'10': "monsoon",
-	'11': "winter",
-	'12': "winter"
+	'Jan': "winter",
+	'Feb': "winter",
+	'Mar': "summer",
+	'Apr': "summer",
+	'May': "summer",
+	'Jun': "summer",
+	'Jul': "monsoon",
+	'Aug': "monsoon",
+	'Sep': "monsoon",
+	'Oct': "monsoon",
+	'Nov': "winter",
+	'Dec': "winter"
 }
 
 df['month'] = df['date'].dt.month
+
+df['month'] = df['month'].apply(lambda x: calendar.month_name[x])
 
 df['season'] = df['month'].apply(lambda x : season_dict.get(str(x), x))
 
