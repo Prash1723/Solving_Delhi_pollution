@@ -32,7 +32,7 @@ season_dict = {
 
 df['month'] = df['date'].dt.month
 
-df['month'] = df['month'].apply(lambda x: calendar.month_name[x])
+df['month'] = df['month'].apply(lambda x: calendar.month_abbr[x])
 
 df['season'] = df['month'].apply(lambda x : season_dict.get(str(x), x))
 
