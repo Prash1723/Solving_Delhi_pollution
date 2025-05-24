@@ -179,23 +179,23 @@ df5.columns = ['month', 'aqi']
 source5 = ColumnDataSource(df5)
 
 p5 = figure(
-	x_range=(0,600),
-	y_range=mc,
+	y_range=(0,600),
+	x_range=mc,
 	title="AQI by months",
 	height=250,
 	width=800
 	)
 
 p5.vbar( 
-	y='month', 
-	right='aqi', 
-	height=0.5, 
+	x='month', 
+	top='aqi', 
+	width=0.5, 
 	source=source5
 	)
 
 p5.text(
-	x='aqi',
-	y='month',
+	y='aqi',
+	x='month',
 	text='aqi',
 	x_offset=5,
 	y_offset=5,
@@ -203,8 +203,8 @@ p5.text(
 	source=source5
 	)
 
-p5.xaxis.axis_label = "Index Value"
-p5.yaxis.axis_label = "month"
+p5.yaxis.axis_label = "Index Value"
+p5.xaxis.axis_label = "month"
 
 # App
 def update_chart1():
