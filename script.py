@@ -168,6 +168,44 @@ p4.text(
 p4.xaxis.axis_label = "Index Value"
 p4.yaxis.axis_label = "season"
 
+# Monthly chart
+
+mc = df['month'].unique().tolist()
+
+df5 = round(df.groupby('month')['Index Value'].mean(), 2).reset_index()
+
+df5.columns = ['month', 'aqi']
+
+source5 = ColumnDataSource(df5)
+
+p5 = figure(
+	x_range=(0,600),
+	y_range=mc,
+	title="AQI by months",
+	height=250,
+	width=800
+	)
+
+p5.vbar( 
+	y='month', 
+	right='aqi', 
+	height=0.5, 
+	source=source5
+	)
+
+p5.text(
+	x='aqi',
+	y='month',
+	text='aqi',
+	x_offset=5,
+	y_offset=5,
+	anchor='bottom_left',
+	source=source5
+	)
+
+p5.xaxis.axis_label = "Index Value"
+p5.yaxis.axis_label = "month"
+
 # App
 def update_chart1():
 	slider_value = date_range.value
@@ -284,26 +322,46 @@ def update_chart1():
 
 	# Seasonality
 	if selected_agg_season == 'average':
+		# Seasons
 		filtered_data4 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('season')[
 		'Index Value'
 		].mean(), 2).reset_index()
 
+		# Months
+		filtered_data5 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('month')[
+		'Index Value'
+		].mean(), 2).reset_index()
+
 	elif selected_agg_season == 'minimum':
+		# Seasons
 		filtered_data4 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('season')[
 		'Index Value'
 		].min(), 2).reset_index()
 
+		# Months
+		filtered_data5 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('month')[
+		'Index Value'
+		].min(), 2).reset_index()
+
 	else:
+		# Seasons
 		filtered_data4 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('season')[
 		'Index Value'
 		].max(), 2).reset_index()
 
+		# Months
+		filtered_data5 = round(df.query("year>=@slider_lr and year<=@slider_hr").groupby('month')[
+		'Index Value'
+		].max(), 2).reset_index()
+
 	filtered_data4.columns = ['season', 'aqi']
+	filtered_data5.columns = ['month', 'aqi']
 
 	source1.data = ColumnDataSource.from_df(filtered_data1)
 	source2.data = ColumnDataSource.from_df(filtered_data2)
 	source3.data = ColumnDataSource.from_df(filtered_data3)
 	source4.data = ColumnDataSource.from_df(filtered_data4)
+	source5.data = ColumnDataSource.from_df(filtered_data5)
 
 date_range.on_change("value", lambda attr, old, new: update_chart1())
 pollutant_select.on_change("value", lambda attr, old, new: update_chart1())
@@ -311,7 +369,7 @@ season_select.on_change("value", lambda attr, old, new: update_chart1())
 agg_season_select.on_change("value", lambda attr, old, new: update_chart1())
 
 # Layout
-layout = row(column(row(date_range, pollutant_select, season_select), p, row(agg_season_select,  p4)), column(p2, p3))
+layout = row(column(row(date_range, pollutant_select, season_select), p, row(agg_season_select,  p4, p5)), column(p2, p3))
 
 curdoc().add_root(layout)
 curdoc().title = "AQI Dashboard"
