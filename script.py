@@ -170,7 +170,7 @@ p4.yaxis.axis_label = "season"
 
 # Monthly chart
 
-mc = df['month'].unique().tolist()
+mc = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 df5 = round(df.groupby('month')['Index Value'].mean(), 2).reset_index()
 
