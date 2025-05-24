@@ -189,7 +189,7 @@ p5 = figure(
 p5.vbar( 
 	x='month', 
 	top='aqi', 
-	width=0.5, 
+	width=0.5,
 	source=source5
 	)
 
@@ -198,8 +198,9 @@ p5.text(
 	x='month',
 	text='aqi',
 	x_offset=5,
-	y_offset=5,
-	anchor='bottom_left',
+	y_offset=-10,
+	angle=0,
+	anchor='bottom',
 	source=source5
 	)
 
