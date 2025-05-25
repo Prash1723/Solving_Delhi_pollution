@@ -46,7 +46,7 @@ agg_season_select = Select(
 p = figure(
 	x_axis_type="datetime",
 	title="AQI trend line",
-	height=400,
+	height=500,
 	width=700
 	)
 
@@ -370,7 +370,7 @@ season_select.on_change("value", lambda attr, old, new: update_chart1())
 agg_season_select.on_change("value", lambda attr, old, new: update_chart1())
 
 # Layout
-layout = row(column(row(date_range, pollutant_select, season_select), p, column(agg_season_select,  row(p4, p5))), column(p2, p3))
+layout = row(row(column(row(date_range, pollutant_select, season_select), row(p, column(p2, p3)), column(agg_season_select,  row(p4, p5)))))
 
 curdoc().add_root(layout)
 curdoc().title = "AQI Dashboard"
