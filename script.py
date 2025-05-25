@@ -47,7 +47,7 @@ p = figure(
 	x_axis_type="datetime",
 	title="AQI trend line",
 	height=500,
-	width=700
+	width=900
 	)
 
 p.line("date", "Index Value", source=source1, line_width=2)
