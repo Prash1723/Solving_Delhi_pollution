@@ -85,6 +85,7 @@ p2.text(
 	text='days',
 	x_offset=5,
 	y_offset=5,
+	text_color='white',
 	anchor='bottom_left',
 	source=source2
 	)
@@ -123,6 +124,7 @@ p3.text(
 	text='days',
 	x_offset=5,
 	y_offset=5,
+	text_color='white',
 	anchor='bottom_left',
 	source=source3
 	)
@@ -161,6 +163,7 @@ p4.text(
 	text='aqi',
 	x_offset=5,
 	y_offset=5,
+	text_color='white',
 	anchor='bottom_left',
 	source=source4
 	)
@@ -199,6 +202,7 @@ p5.text(
 	text='aqi',
 	x_offset=5,
 	y_offset=-10,
+	text_color='white',
 	angle=0,
 	anchor='bottom',
 	source=source5
