@@ -373,4 +373,5 @@ agg_season_select.on_change("value", lambda attr, old, new: update_chart1())
 layout = row(row(column(row(date_range, pollutant_select, season_select), row(p, column(p2, p3)), column(agg_season_select,  row(p4, p5)))))
 
 curdoc().add_root(layout)
+curdoc().theme = 'night_sky'
 curdoc().title = "AQI Dashboard"
