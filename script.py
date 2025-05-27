@@ -211,6 +211,44 @@ p5.text(
 p5.yaxis.axis_label = "Index Value"
 p5.xaxis.axis_label = "month"
 
+# Monthly quality chart
+
+df6 = df.groupby(['month', 'Air quality'])['date'].count().reset_index()
+
+df6.columns = ['month', 'aq_days']
+
+source5 = ColumnDataSource(df6)
+
+p6 = figure(
+        y_range=(0,600),
+        x_range=mc,
+        title="monthly aq",
+        height=250,
+        width=800
+        )
+
+p6.vbar( 
+        x='month', 
+        top='aqi', 
+        width=0.5,
+        source=source6
+        )
+
+p6.text(
+        y='aq_days',
+        x='month',
+        text='aq_days',
+        x_offset=5,
+        y_offset=-10,
+        text_color='white',
+        angle=0,
+        anchor='bottom',
+        source=source6
+        )
+
+p5.yaxis.axis_label = "aq_days"
+p5.xaxis.axis_label = "month"
+
 # App
 def update_chart1():
 	slider_value = date_range.value
@@ -359,14 +397,21 @@ def update_chart1():
 		'Index Value'
 		].max(), 2).reset_index()
 
+ # Monthly air quality
+ filtered_data6 = df.query("year>=@slider_lr and year<=@slider_hr").groupby(['month', 'Air quality'])[
+		'date'
+		].count().reset_index()
+
 	filtered_data4.columns = ['season', 'aqi']
 	filtered_data5.columns = ['month', 'aqi']
+ filtered_data6.columns = ['month', 'aq', 'days']
 
 	source1.data = ColumnDataSource.from_df(filtered_data1)
 	source2.data = ColumnDataSource.from_df(filtered_data2)
 	source3.data = ColumnDataSource.from_df(filtered_data3)
 	source4.data = ColumnDataSource.from_df(filtered_data4)
 	source5.data = ColumnDataSource.from_df(filtered_data5)
+ source6.data = ColumnDataSource.from_df(filtered_data6)
 
 date_range.on_change("value", lambda attr, old, new: update_chart1())
 pollutant_select.on_change("value", lambda attr, old, new: update_chart1())
@@ -374,7 +419,7 @@ season_select.on_change("value", lambda attr, old, new: update_chart1())
 agg_season_select.on_change("value", lambda attr, old, new: update_chart1())
 
 # Layout
-layout = row(row(column(row(date_range, pollutant_select, season_select), row(p, column(p2, p3)), column(agg_season_select,  row(p4, p5)))))
+layout = row(row(column(row(date_range, pollutant_select, season_select), row(p, column(p2, p3)), column(agg_season_select,  row(p4, p5))), p6))
 
 curdoc().add_root(layout)
 curdoc().theme = 'night_sky'
