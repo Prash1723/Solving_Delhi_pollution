@@ -217,7 +217,7 @@ df6 = df.groupby(['month', 'Air quality'])['date'].count().reset_index()
 
 df6.columns = ['month', 'aq_days']
 
-source5 = ColumnDataSource(df6)
+source6 = ColumnDataSource(df6)
 
 p6 = figure(
         y_range=(0,600),
@@ -246,8 +246,8 @@ p6.text(
         source=source6
         )
 
-p5.yaxis.axis_label = "aq_days"
-p5.xaxis.axis_label = "month"
+p6.yaxis.axis_label = "aq_days"
+p6.xaxis.axis_label = "month"
 
 # App
 def update_chart1():
