@@ -213,7 +213,7 @@ p5.xaxis.axis_label = "month"
 
 # Monthly quality chart
 
-df6 = df.groupby(['month', 'Air quality'])['date'].count().reset_index()
+df6 = df.groupby(['month', 'Air Quality'])['date'].count().reset_index()
 
 df6.columns = ['month', 'aq_days']
 
@@ -400,7 +400,7 @@ def update_chart1():
 	# Monthly air quality
 	filtered_data6 = df.query(
  		"year>=@slider_lr and year<=@slider_hr"
- 		).groupby(['month', 'Air quality'])['date'].count().reset_index()
+ 		).groupby(['month', 'Air Quality'])['date'].count().reset_index()
 
 	filtered_data4.columns = ['season', 'aqi']
 	filtered_data5.columns = ['month', 'aqi']
