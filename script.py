@@ -220,7 +220,7 @@ df6.columns = ['month', 'aq', 'days']
 source6 = ColumnDataSource(df6)
 
 p6 = figure(
-        y_range=(0,600),
+        y_range=(0,250),
         x_range=mc,
         title="monthly aq",
         height=250,
@@ -232,7 +232,7 @@ p6.vbar(
         top='days', 
         width=0.5,
         source=source6,
-        legend_label='aq'
+        legend_field='aq'
         )
 
 p6.text(
@@ -247,7 +247,7 @@ p6.text(
         source=source6
         )
 
-p6.yaxis.axis_label = "aq_days"
+p6.yaxis.axis_label = "days"
 p6.xaxis.axis_label = "month"
 
 # App
