@@ -215,7 +215,7 @@ p5.xaxis.axis_label = "month"
 
 df6 = df.groupby(['month', 'Air Quality'])['date'].count().reset_index()
 
-df6.columns = ['month', 'aq_days']
+df6.columns = ['month', 'aq', 'days']
 
 source6 = ColumnDataSource(df6)
 
@@ -419,7 +419,20 @@ season_select.on_change("value", lambda attr, old, new: update_chart1())
 agg_season_select.on_change("value", lambda attr, old, new: update_chart1())
 
 # Layout
-layout = row(row(column(row(date_range, pollutant_select, season_select), row(p, column(p2, p3)), column(agg_season_select,  row(p4, p5))), p6))
+layout = row(
+	row(
+		column(
+			row(date_range, pollutant_select, season_select), 
+			row(p, column(p2, p3)
+			), 
+			column(
+				agg_season_select,  
+				row(p4, p5), 
+				p6
+				)
+			)
+		)
+	)
 
 curdoc().add_root(layout)
 curdoc().theme = 'night_sky'
