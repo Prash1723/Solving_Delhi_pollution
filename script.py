@@ -229,15 +229,16 @@ p6 = figure(
 
 p6.vbar( 
         x='month', 
-        top='aqi', 
+        top='days', 
         width=0.5,
-        source=source6
+        source=source6,
+        legend_label='aq'
         )
 
 p6.text(
-        y='aq_days',
+        y='days',
         x='month',
-        text='aq_days',
+        text='days',
         x_offset=5,
         y_offset=-10,
         text_color='white',
