@@ -397,21 +397,21 @@ def update_chart1():
 		'Index Value'
 		].max(), 2).reset_index()
 
- # Monthly air quality
- filtered_data6 = df.query("year>=@slider_lr and year<=@slider_hr").groupby(['month', 'Air quality'])[
-		'date'
-		].count().reset_index()
+	# Monthly air quality
+	filtered_data6 = df.query(
+ 		"year>=@slider_lr and year<=@slider_hr"
+ 		).groupby(['month', 'Air quality'])['date'].count().reset_index()
 
 	filtered_data4.columns = ['season', 'aqi']
 	filtered_data5.columns = ['month', 'aqi']
- filtered_data6.columns = ['month', 'aq', 'days']
+	filtered_data6.columns = ['month', 'aq', 'days']
 
 	source1.data = ColumnDataSource.from_df(filtered_data1)
 	source2.data = ColumnDataSource.from_df(filtered_data2)
 	source3.data = ColumnDataSource.from_df(filtered_data3)
 	source4.data = ColumnDataSource.from_df(filtered_data4)
 	source5.data = ColumnDataSource.from_df(filtered_data5)
- source6.data = ColumnDataSource.from_df(filtered_data6)
+	source6.data = ColumnDataSource.from_df(filtered_data6)
 
 date_range.on_change("value", lambda attr, old, new: update_chart1())
 pollutant_select.on_change("value", lambda attr, old, new: update_chart1())
