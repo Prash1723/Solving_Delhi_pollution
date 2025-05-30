@@ -222,7 +222,7 @@ source6 = ColumnDataSource(df6)
 p6 = figure(
         y_range=(0,250),
         x_range=mc,
-        title="monthly aq",
+        title="monthly air quality in days",
         height=250,
         width=800
         )
