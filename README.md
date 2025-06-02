@@ -54,3 +54,7 @@ The analysis is inspired by the author's desire to identify, track and try to fi
 ## Contributing
 
 Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
+
+## Conclusion
+
+In the analysis, we see that most prominent pollutants affecting the overall air quality is PM2.5 and PM10 particulate matters, particularly in the winter. 
