@@ -26,7 +26,7 @@ date_range = RangeSlider(
 
 pollutant_select = Select(
 	title="Select Pollutant",
-    value="All",
+	value="All",
 	options=["All"] + list(set(df['Prominent Pollutant'].dropna().astype(str)))
 	)
 
@@ -40,6 +40,12 @@ agg_season_select = Select(
 	title="Select Agg.",
 	value="average",
 	options=["average", "minimum", "maximum"]
+	)
+
+aq_select = Select(
+	title="Select Air Quality",
+	value="All",
+	options=["All"] + list(set(df['Air Quality'].dropna().astype(str)))
 	)
 
 # Figure
@@ -213,9 +219,9 @@ p5.xaxis.axis_label = "month"
 
 # Monthly quality chart
 
-df6 = df.groupby(['month', 'Air Quality'])['date'].count().reset_index()
+df6 = df.groupby('month')['date'].count().reset_index()
 
-df6.columns = ['month', 'aq', 'days']
+df6.columns = ['month', 'days']
 
 source6 = ColumnDataSource(df6)
 
@@ -258,6 +264,7 @@ def update_chart1():
 	selected_pollutant = pollutant_select.value
 	selected_season = season_select.value
 	selected_agg_season = agg_season_select.value
+	selected_aq = aq_select.value
 
 	# Trend line
 	if selected_pollutant != "All" and selected_season != "All":
@@ -364,6 +371,22 @@ def update_chart1():
 
 		filtered_data3.columns = ['Air Quality', 'days']
 
+		# Monthly air quality
+		filtered_data6 = df.query(
+ 			"year>=@slider_lr and year<=@slider_hr"
+ 			).groupby(['month', 'Air Quality'])['date'].count().reset_index()
+
+	# Monthly air quality days
+	if selected_aq != 'All':
+		filtered_data6 = df.query(
+ 			"year>=@slider_lr and year<=@slider_hr"
+ 			).groupby(['month', 'Air Quality'])['date'].count().reset_index()
+
+	else:
+		filtered_data6 = df.query(
+ 			"`Air Quality`==@selected_aq and year>=@slider_lr and year<=@slider_hr"
+ 			).groupby('month')['date'].count().reset_index()
+
 	# Seasonality
 	if selected_agg_season == 'average':
 		# Seasons
@@ -398,11 +421,6 @@ def update_chart1():
 		'Index Value'
 		].max(), 2).reset_index()
 
-	# Monthly air quality
-	filtered_data6 = df.query(
- 		"year>=@slider_lr and year<=@slider_hr"
- 		).groupby(['month', 'Air Quality'])['date'].count().reset_index()
-
 	filtered_data4.columns = ['season', 'aqi']
 	filtered_data5.columns = ['month', 'aqi']
 	filtered_data6.columns = ['month', 'aq', 'days']
@@ -418,6 +436,7 @@ date_range.on_change("value", lambda attr, old, new: update_chart1())
 pollutant_select.on_change("value", lambda attr, old, new: update_chart1())
 season_select.on_change("value", lambda attr, old, new: update_chart1())
 agg_season_select.on_change("value", lambda attr, old, new: update_chart1())
+aq_select.on_change("value", lambda attr, old, new: update_chart1())
 
 # Layout
 layout = row(
@@ -429,7 +448,7 @@ layout = row(
 			column(
 				agg_season_select,  
 				row(p4, p5), 
-				p6
+				column(aq_select, p6)
 				)
 			)
 		)
