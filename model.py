@@ -12,3 +12,11 @@ y = data['Index Value']
 # Train test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 
+# Create and train a linear regressor
+lr = LinearRegression()
+lr.fit(X_train, y_train)
+
+# Make predictions
+y_pred = lr.predict(X_test)
+
+# Evaluate the model
