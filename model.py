@@ -12,9 +12,13 @@ month_list = list(calendar.month_abbr)
 data['month'] = data['month'].apply(lambda x: month_list.index(x))
 
 # Select features for model
-X = data[['Prominent Pollutant', 'year', 'month', 'SO2', 'NO2', 'O3', 'PM10', 'CO', 'OZONE', 'PM2.5']]
+df = data[['Prominent Pollutant', 'year', 'month', 'SO2', 'NO2', 'O3', 'PM10', 'CO', 'OZONE', 'PM2.5']]
 
-pol = pd.get_dummies(X['Prominent Pollutant'])
+pol = pd.get_dummies(df['Prominent Pollutant'])
+
+df.drop('Prominent Pollutant', axis=1, inplace=True)
+
+X = pd.concat([df, pol], axis=1)
 
 y = data['Index Value']
 
@@ -31,4 +35,4 @@ y_pred = lr.predict(X_test)
 # Evaluate the model
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 
-print("RMSE : {%f}", rmse)
+print("RMSE : {0:.02f}".format(rmse))
