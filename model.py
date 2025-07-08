@@ -3,17 +3,18 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
+import calendar
 
 data = pd.read_csv(r'data/preprocessed.csv')
 
-data['PM10'] = data['PM10'].astype('float')
-print(data['Prominent Pollutant'].unique())
+# Preprocess month
+month_list = list(calendar.month_abbr)
+data['month'] = data['month'].apply(lambda x: month_list.index(x))
 
 # Select features for model
 X = data[['Prominent Pollutant', 'year', 'month', 'SO2', 'NO2', 'O3', 'PM10', 'CO', 'OZONE', 'PM2.5']]
 
-
-# X['PM2.5'] = pd.to_numeric(X['PM2.5'])
+pol = pd.get_dummies(X['Prominent Pollutant'])
 
 y = data['Index Value']
 
