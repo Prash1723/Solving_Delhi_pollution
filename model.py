@@ -6,8 +6,14 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 data = pd.read_csv(r'data/preprocessed.csv')
 
+data['PM10'] = data['PM10'].astype('float')
+print(data['Prominent Pollutant'].unique())
+
 # Select features for model
 X = data[['Prominent Pollutant', 'year', 'month', 'SO2', 'NO2', 'O3', 'PM10', 'CO', 'OZONE', 'PM2.5']]
+
+
+# X['PM2.5'] = pd.to_numeric(X['PM2.5'])
 
 y = data['Index Value']
 
