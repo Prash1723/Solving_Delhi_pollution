@@ -33,7 +33,9 @@ lr.fit(X_train, y_train)
 y_pred = lr.predict(X_test)
 
 # Evaluate the model
-rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+mse = mean_squared_error(y_test, y_pred)
+
+rmse = np.sqrt(mse)
 
 mae = mean_absolute_error(y_test, y_pred)
 
