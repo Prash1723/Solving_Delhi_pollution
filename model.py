@@ -35,4 +35,8 @@ y_pred = lr.predict(X_test)
 # Evaluate the model
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 
+mae = mean_absolute_error(y_test, y_pred)
+
 print("RMSE : {0:.02f}".format(rmse))
+
+print("MAE : {0:.02f}".format(mae))
