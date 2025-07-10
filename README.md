@@ -1,6 +1,6 @@
 # Solving Delhi pollution
 
-The aim of the project is to largely identify the pollution levels in the second most populated city in the world and ideally come up with a solution. Initially, for visualization we have a Dashboard to view all the statistics in the problem.
+The aim of the project is to largely identify the pollution levels in the second most populated city in the world and ideally come up with a solution. Initially, for visualization we have a Dashboard to view all the statistics in the problem. A machine learning model to predict the future of the city.
 
 ## Dataset
 
@@ -13,7 +13,9 @@ The dataset used is the air pollution records for 2015-2023 and it features the 
 - Internet (For Dashboard)
 - Modules:
     - Pandas
+    - Numpy
     - Bokeh
+    - Scikit-learn
 
 ## Run
 
