@@ -44,6 +44,8 @@ rmse = np.sqrt(mse)
 
 mae = mean_absolute_error(y_test, y_pred)
 
+print("MSE : {0:.02f}".format(mse))
+
 print("RMSE : {0:.02f}".format(rmse))
 
 print("MAE : {0:.02f}".format(mae))
