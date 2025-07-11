@@ -5,14 +5,19 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import calendar
 
+pd.options.mode.copy_on_write = True
+
 data = pd.read_csv(r'data/preprocessed.csv')
 
 # Preprocess month
 month_list = list(calendar.month_abbr)
 data['month'] = data['month'].apply(lambda x: month_list.index(x))
 
+# Extract day
+data['day'] = pd.to_datetime(data['date']).dt.day
+
 # Select features for model
-df = data[['Prominent Pollutant', 'year', 'month', 'SO2', 'NO2', 'O3', 'PM10', 'CO', 'OZONE', 'PM2.5']]
+df = data[['Prominent Pollutant', 'year', 'month', 'day', 'SO2', 'NO2', 'O3', 'PM10', 'CO', 'OZONE', 'PM2.5']]
 
 pol = pd.get_dummies(df['Prominent Pollutant'])
 
@@ -42,3 +47,5 @@ mae = mean_absolute_error(y_test, y_pred)
 print("RMSE : {0:.02f}".format(rmse))
 
 print("MAE : {0:.02f}".format(mae))
+
+# Predictions for 2024
