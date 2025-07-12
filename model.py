@@ -16,6 +16,21 @@ data['month'] = data['month'].apply(lambda x: month_list.index(x))
 # Extract day
 data['day'] = pd.to_datetime(data['date']).dt.day
 
+# Preprocess year
+year_dict = {
+	2015: 1,
+	2016: 2,
+	2017: 3,
+	2018: 4,
+	2019: 5,
+	2020: 6,
+	2021: 7,
+	2022: 8,
+	2023: 9
+}
+
+data['year'] = data['year'].apply(lambda x: year_dict.get(x,x))
+
 # Select features for model
 df = data[['Prominent Pollutant', 'year', 'month', 'day', 'SO2', 'NO2', 'O3', 'PM10', 'CO', 'OZONE', 'PM2.5']]
 
