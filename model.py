@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import calendar
@@ -49,20 +50,36 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 lr = LinearRegression()
 lr.fit(X_train, y_train)
 
+# Create and train a decision tree regressor
+dtr = DecisionTreeRegressor()
+dtr.fit(X_train, y_train)
+
 # Make predictions
-y_pred = lr.predict(X_test)
+y_pred_lr = lr.predict(X_test)
+y_pred_dtr = dtr.predict(X_test)
 
-# Evaluate the model
-mse = mean_squared_error(y_test, y_pred)
+# Evaluate the LR model
+lr_mse = mean_squared_error(y_test, y_pred_lr)
 
-rmse = np.sqrt(mse)
+lr_rmse = np.sqrt(lr_mse)
 
-mae = mean_absolute_error(y_test, y_pred)
+lr_mae = mean_absolute_error(y_test, y_pred_lr)
 
-print("MSE : {0:.02f}".format(mse))
+print("LR MSE : {0:.02f}".format(lr_mse))
 
-print("RMSE : {0:.02f}".format(rmse))
+print("LR RMSE : {0:.02f}".format(lr_rmse))
 
-print("MAE : {0:.02f}".format(mae))
+print("LR MAE : {0:.02f}".format(lr_mae))
 
-# Predictions for 2024
+# Evaluate the DTR model
+dtr_mse = mean_squared_error(y_test, y_pred_dtr)
+
+dtr_rmse = np.sqrt(dtr_mse)
+
+dtr_mae = mean_absolute_error(y_test, y_pred_dtr)
+
+print("DTR MSE : {0:.02f}".format(dtr_mse))
+
+print("DTR RMSE : {0:.02f}".format(dtr_rmse))
+
+print("DTR MAE : {0:.02f}".format(dtr_mae))
