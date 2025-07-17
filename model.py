@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression, Lasso
+from sklearn.linear_model import LinearRegression, Lasso, ElasticNet
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
@@ -54,6 +54,10 @@ lr.fit(X_train, y_train)
 ls = Lasso()
 ls.fit(X_train, y_train)
 
+# Create and train a Lasso regressor
+en = ElasticNet()
+en.fit(X_train, y_train)
+
 # Create and train a decision tree regressor
 dtr = DecisionTreeRegressor()
 dtr.fit(X_train, y_train)
@@ -61,6 +65,7 @@ dtr.fit(X_train, y_train)
 # Make predictions
 y_pred_lr = lr.predict(X_test)
 y_pred_ls = ls.predict(X_test)
+y_pred_en = en.predict(X_test)
 y_pred_dtr = dtr.predict(X_test)
 
 # Evaluate the LR model
@@ -88,6 +93,19 @@ print("LS MSE : {0:.02f}".format(ls_mse))
 print("LS RMSE : {0:.02f}".format(ls_rmse))
 
 print("LS MAE : {0:.02f}".format(ls_mae))
+
+# Evaluate the Lasso model
+en_mse = mean_squared_error(y_test, y_pred_en)
+
+en_rmse = np.sqrt(en_mse)
+
+en_mae = mean_absolute_error(y_test, y_pred_en)
+
+print("EN MSE : {0:.02f}".format(en_mse))
+
+print("EN RMSE : {0:.02f}".format(en_rmse))
+
+print("EN MAE : {0:.02f}".format(en_mae))
 
 # Evaluate the DTR model
 dtr_mse = mean_squared_error(y_test, y_pred_dtr)
