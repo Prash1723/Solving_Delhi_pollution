@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Lasso
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
@@ -50,12 +50,17 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 lr = LinearRegression()
 lr.fit(X_train, y_train)
 
+# Create and train a Lasso regressor
+ls = Lasso()
+ls.fit(X_train, y_train)
+
 # Create and train a decision tree regressor
 dtr = DecisionTreeRegressor()
 dtr.fit(X_train, y_train)
 
 # Make predictions
 y_pred_lr = lr.predict(X_test)
+y_pred_ls = ls.predict(X_test)
 y_pred_dtr = dtr.predict(X_test)
 
 # Evaluate the LR model
@@ -70,6 +75,19 @@ print("LR MSE : {0:.02f}".format(lr_mse))
 print("LR RMSE : {0:.02f}".format(lr_rmse))
 
 print("LR MAE : {0:.02f}".format(lr_mae))
+
+# Evaluate the Lasso model
+ls_mse = mean_squared_error(y_test, y_pred_ls)
+
+ls_rmse = np.sqrt(ls_mse)
+
+ls_mae = mean_absolute_error(y_test, y_pred_ls)
+
+print("LS MSE : {0:.02f}".format(ls_mse))
+
+print("LS RMSE : {0:.02f}".format(ls_rmse))
+
+print("LS MAE : {0:.02f}".format(ls_mae))
 
 # Evaluate the DTR model
 dtr_mse = mean_squared_error(y_test, y_pred_dtr)
