@@ -75,6 +75,8 @@ lr_rmse = np.sqrt(lr_mse)
 
 lr_mae = mean_absolute_error(y_test, y_pred_lr)
 
+print('-'*20+'LinearRegression'+'-'*20)
+
 print("LR MSE : {0:.02f}".format(lr_mse))
 
 print("LR RMSE : {0:.02f}".format(lr_rmse))
@@ -87,6 +89,8 @@ ls_mse = mean_squared_error(y_test, y_pred_ls)
 ls_rmse = np.sqrt(ls_mse)
 
 ls_mae = mean_absolute_error(y_test, y_pred_ls)
+
+print('-'*20+'LassoRegression'+'-'*20)
 
 print("LS MSE : {0:.02f}".format(ls_mse))
 
@@ -101,6 +105,8 @@ en_rmse = np.sqrt(en_mse)
 
 en_mae = mean_absolute_error(y_test, y_pred_en)
 
+print('-'*20+'ElasticNet'+'-'*20)
+
 print("EN MSE : {0:.02f}".format(en_mse))
 
 print("EN RMSE : {0:.02f}".format(en_rmse))
@@ -113,6 +119,8 @@ dtr_mse = mean_squared_error(y_test, y_pred_dtr)
 dtr_rmse = np.sqrt(dtr_mse)
 
 dtr_mae = mean_absolute_error(y_test, y_pred_dtr)
+
+print('-'*20+'DecisionTreeRegressor'+'-'*20)
 
 print("DTR MSE : {0:.02f}".format(dtr_mse))
 
