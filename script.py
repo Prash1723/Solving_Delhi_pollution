@@ -33,11 +33,12 @@ log.addHandler(file_handler)
 
 df = pd.read_csv(r'~/Projects/Solving_Delhi_pollution/data/preprocessed.csv')
 df['date'] = pd.to_datetime(df['date'])
+df['Prominent Pollutant'] = df['Prominent Pollutant'].astype('str')
 print(df.info())
 
 try:
 	# Source
-	source1 = ColumnDataSource(data=dict(date=df['date'], value=df['Index Value']))
+	source1 = ColumnDataSource(df)
 
 	# Create widgets
 	date_range = RangeSlider(
@@ -62,8 +63,8 @@ try:
 		width=700
 		)
 
-	p.line("date", "value", source=source1, line_width=2)
-	p.scatter("date", "value", source=source1, size=3, color="red")
+	p.line("date", "Index Value", source=source1, line_width=2)
+	p.scatter("date", "Index Value", source=source1, size=3, color="red")
 	p.xaxis.axis_label = "Date"	
 	p.yaxis.axis_label = "AQI Value"
 
@@ -77,7 +78,10 @@ try:
 		if selected_pollutant != "All":
 			filtered_data = df[df["Prominent Pollutant"]==selected_pollutant]
 
-		source1.data = filtered_data
+			source1.data = filtered_data
+
+		else:
+			source1.data = df
 
 	date_range.on_change("value", lambda attr, old, new: update_chart())
 	pollutant_select.on_change("value", lambda attr, old, new: update_chart())
@@ -85,7 +89,7 @@ try:
 	# Layout
 	layout = column(row(date_range, pollutant_select), p)
 
-	curdoc().add_root(p)
+	curdoc().add_root(layout)
 	curdoc().title = "AQI Dashboard"
 
 except Exception as e:
