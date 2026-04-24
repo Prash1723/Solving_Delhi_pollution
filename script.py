@@ -27,17 +27,17 @@ log.setLevel(logging.DEBUG)
 shell_handler = RichHandler()
 log.addHandler(shell_handler)
 
-file_handler = log.FileHandler("app.log")
-file_handler.setFormatter(log.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+file_handler = logging.FileHandler("app.log")
+file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
 log.addHandler(file_handler)
 
+df = pd.read_csv(r'~/Projects/Solving_Delhi_pollution/data/preprocessed.csv')
+df['date'] = pd.to_datetime(df['date'])
+print(df.info())
+
 try:
-	df = pd.read_csv(r'~/Projects/Solving_Delhi_pollution/data/preprocessed.csv')
-
-	print(df.info())
-
 	# Source
-	source1 = ColumnDataSource(df)
+	source1 = ColumnDataSource(data=dict(date=df['date'], value=df['Index Value']))
 
 	# Create widgets
 	date_range = RangeSlider(
@@ -62,8 +62,8 @@ try:
 		width=700
 		)
 
-	p.line("date", "Index Value", source=source1, line_width=2)
-	p.scatter("date", "Index Value", source=source1, size=3, color="red")
+	p.line("date", "value", source=source1, line_width=2)
+	p.scatter("date", "value", source=source1, size=3, color="red")
 	p.xaxis.axis_label = "Date"	
 	p.yaxis.axis_label = "AQI Value"
 
@@ -77,16 +77,16 @@ try:
 		if selected_pollutant != "All":
 			filtered_data = df[df["Prominent Pollutant"]==selected_pollutant]
 
-		source1.data.update() = ColumnDataSource.from_df(filtered_data)
+		source1.data = filtered_data
 
-	#date_range.on_change("value", lambda attr, old, new: update_chart())
-	#pollutant_select.on_change("value", lambda attr, old, new: update_chart())
+	date_range.on_change("value", lambda attr, old, new: update_chart())
+	pollutant_select.on_change("value", lambda attr, old, new: update_chart())
 
 	# Layout
-	#layout = column(row(date_range, pollutant_select), p)
+	layout = column(row(date_range, pollutant_select), p)
 
 	curdoc().add_root(p)
 	curdoc().title = "AQI Dashboard"
 
-except as e:
+except Exception as e:
 	log.info(f"Error: {e}")
