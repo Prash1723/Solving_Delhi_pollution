@@ -76,12 +76,12 @@ try:
 		selected_pollutant = pollutant_select.value
 
 		if selected_pollutant != "All":
-			filtered_data = df[df["Prominent Pollutant"]==selected_pollutant]
+			filtered_data = df.query('year>=@slider_lr and year<=@slider_hr')[df["Prominent Pollutant"]==selected_pollutant]
 
 			source1.data = filtered_data
 
 		else:
-			source1.data = df
+			source1.data = df.query('year>=@slider_lr and year<=@slider_hr')
 
 	date_range.on_change("value", lambda attr, old, new: update_chart())
 	pollutant_select.on_change("value", lambda attr, old, new: update_chart())
