@@ -3,6 +3,7 @@ import pandas as pd
 from bokeh.io import curdoc
 from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, Select, RangeSlider
+from bokeh.models.widgets import RadioGroup, Toggle
 from bokeh.models import Tabs, TabPanel
 from bokeh.plotting import figure
 
@@ -36,6 +37,7 @@ df['date'] = pd.to_datetime(df['date'])
 df['Prominent Pollutant'] = df['Prominent Pollutant'].astype('str')
 print(df.info())
 
+
 try:
 	# Source
 	source1 = ColumnDataSource(df)
@@ -49,13 +51,25 @@ try:
 		step=1
 		)
 
-	pollutant_select = Select(
-		title="Select Pollutant",
+	radio_pollutant = RadioGroup(
+		labels=["combo", "individual"],
+		active=0
+		)
+
+	combo_select = Select(
+		title="Select Pollutant combination",
 	    value="All",
 		options=["All"] + list(set(df['Prominent Pollutant']))
 		)
 
-	# Figure
+
+	pollutant_select = Select(
+		title="Select Pollutant combination",
+	    value="OZONE",
+		options=['SO2', 'NO2', 'O3', 'PM10', 'CO', 'OZONE', 'PM2.5']
+		)
+
+	# Figure - Time series(all pollutants)
 	p = figure(
 		x_axis_type="datetime",
 		title="AQI trend line",
@@ -68,26 +82,52 @@ try:
 	p.xaxis.axis_label = "Date"	
 	p.yaxis.axis_label = "AQI Value"
 
+	# Figure - Time series(Singular pollutant)
+	p2 = figure(
+		x_axis_type="datetime",
+		title="AQI(Pollutant) trend line",
+		height=400,
+		width=700
+		)
+
+	p2.line("date", "Index Value", source=source1, line_width=2)
+	p2.scatter("date", "Index Value", source=source1, size=3, color="red")
+	p2.xaxis.axis_label = "Date"	
+	p2.yaxis.axis_label = "AQI Value"
+
 	# App
 	def update_chart():
 		slider_value = date_range.value
 		slider_lr = slider_value[0]
 		slider_hr = slider_value[1]
-		selected_pollutant = pollutant_select.value
 
-		if selected_pollutant != "All":
-			filtered_data = df.query('year>=@slider_lr and year<=@slider_hr')[df["Prominent Pollutant"]==selected_pollutant]
+		selected_combo = combo_select.value
 
+		if selected_combo != "All":
+			filtered_data = df.query('year>=@slider_lr and year<=@slider_hr')[df["Prominent Pollutant"]==selected_combo]
 			source1.data = filtered_data
+			source1.change.emit()
 
 		else:
 			source1.data = df.query('year>=@slider_lr and year<=@slider_hr')
 
+	def update_chartp2(attr, old, new):
+		selected_pollutant = pollutant_select.value
+		slider_lr = slider_value[0]
+		slider_hr = slider_value[1]
+
+		if selected_pollutant in ['SO2', 'NO2', 'O3', 'PM10', 'CO', 'OZONE', 'PM2.5']:
+			filtered_data = df.query('year>=@slider_lr and year<=@slider_hr')[df[selected_pollutant]==1]
+			source1.data = filtered_data
+			source1.change.emit()
+
+	radio_pollutant.on_change("active", toggle_polchart)
 	date_range.on_change("value", lambda attr, old, new: update_chart())
+	combo_select.on_change("value", lambda attr, old, new: update_chart())
 	pollutant_select.on_change("value", lambda attr, old, new: update_chart())
 
 	# Layout
-	layout = column(row(date_range, pollutant_select), p)
+	layout = column(row(date_range, combo_select, radio_pollutant, pollutant_select), p)
 
 	curdoc().add_root(layout)
 	curdoc().title = "AQI Dashboard"
